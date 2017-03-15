@@ -114,7 +114,7 @@
   },
   "pre-commit": [
     "precommit-msg",
-    "test",
+    "test"
   ],
   "author": "Guillaume Cisco",
   "license": "MIT"
