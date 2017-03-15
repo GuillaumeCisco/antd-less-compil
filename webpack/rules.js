@@ -7,41 +7,55 @@ export default function (appName) {
     return [{
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'happypack/loader?id=babel',
+        use: 'happypack/loader?id=babel',
     }, {
         test: /\.jpe?g$|\.gif$|\.png$/,
-        loader: `url-loader?limit=10000&name=/${prefix}[hash].[ext]`,
+        use: `url-loader?limit=10000&name=/${prefix}[hash].[ext]`,
     }, {
         test: /\.(otf|svg)(\?.+)?$/,
-        loader: 'url-loader?limit=8192',
+        use: 'url-loader?limit=8192',
     }, {
         test: /\.eot(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/vnd.ms-fontobject',
+        use: 'url-loader?limit=100000&mimetype=application/vnd.ms-fontobject',
     }, {
         test: /\.woff2(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/font-woff2',
+        use: 'url-loader?limit=100000&mimetype=application/font-woff2',
     }, {
         test: /\.woff(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/font-woff',
+        use: 'url-loader?limit=100000&mimetype=application/font-woff',
     }, {
         test: /\.ttf(\?\S*)?$/,
-        loader: 'url-loader?limit=100000&mimetype=application/font-ttf',
+        use: 'url-loader?limit=100000&mimetype=application/font-ttf',
     }, {
         test: /\.html$/,
-        loader: 'html-loader',
+        use: 'html-loader',
     }, {
         test: /\.s?css$/,
         exclude: /node_modules/,
         ...(PRODUCTION ? {
-                loader: ExtractTextPlugin.extract({
-                    fallbackLoader: 'style-loader',
-                    loader: ['css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader?importLoaders=1', 'postcss-loader', 'sass-loader']
                 })
             } : {loaders: ["style-loader", "css-loader?sourceMap", "postcss-loader", "sass-loader?sourceMap&sourceComments"]} )
+    }, {
+        test: /antd.*\.less$/,
+        ...(PRODUCTION ? {
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader?importLoaders=1', 'postcss-loader', 'less-loader']
+                })
+            } : {
+                use: [
+                    "style-loader",
+                    {
+                        loader: 'css-loader',
+                        options: {sourceMap: 1}
+                    },
+                    "postcss-loader",
+                    "less-loader"
+                ]
+            } )
     },
-        // {
-        //     test: /\.less$/,
-        //     use: ["style-loader", {loader: 'css-loader', options: {sourceMap: 1}}, "postcss-loader", "less-loader"]
-        // }
     ];
 }
