@@ -31,7 +31,6 @@ export default function (appName) {
         use: 'html-loader',
     }, {
         test: /\.s?css$/,
-        exclude: /node_modules/,
         ...(PRODUCTION ? {
                 use: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
